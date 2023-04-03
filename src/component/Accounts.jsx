@@ -1,10 +1,9 @@
-import React, {useContext} from 'react';
-import {UsersContext} from "../App";
 import Layout from "./Layout";
+import {useSelector} from "react-redux";
 
 function Accounts() {
 
-    const {users} = useContext(UsersContext)
+    const {users} = useSelector((state) => state.userStore)
 
     const renderUsers = () => {
         return users.map((user) => {

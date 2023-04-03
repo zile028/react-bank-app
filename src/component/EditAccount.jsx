@@ -1,13 +1,15 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "./Layout";
-import {UsersContext} from "../App";
 import {useNavigate, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {updateUser} from "../store/usersSlice";
 
 function EditAccount() {
     const [inputData, setInputData] = useState({name: "", phone: "", email: "", deposit: ""});
-    const {users, setUsers} = useContext(UsersContext);
+    const {users} = useSelector((state) => state.userStore)
     const redirect = useNavigate()
     const {id} = useParams()
+    const dispatch = useDispatch()
     useEffect(() => {
         setInputData(users.find(user => user.id === parseInt(id)))
     }, [])
@@ -21,13 +23,7 @@ function EditAccount() {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        setUsers(users.map(user => {
-            if (user.id === inputData.id) {
-                return inputData
-            } else {
-                return user
-            }
-        }))
+        dispatch(updateUser(inputData))
         redirect("/editDeleteAccount")
     }
     return (

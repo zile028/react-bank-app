@@ -1,11 +1,14 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import Layout from "./Layout";
-import {UsersContext} from "../App";
+
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {addUser} from "../store/usersSlice";
 
 function AddAccount() {
     const [inputData, setInputData] = useState({});
-    const {users, setUsers} = useContext(UsersContext);
+    const dispatch = useDispatch()
+
     const redirect = useNavigate()
     const inputHandler = (e) => {
         let copyInputData = {...inputData}
@@ -15,7 +18,7 @@ function AddAccount() {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        setUsers([...users, {...inputData, id: new Date().getTime()}])
+        dispatch(addUser(inputData))
         redirect("/")
     }
 

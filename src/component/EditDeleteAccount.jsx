@@ -1,15 +1,12 @@
-import React, {useContext} from 'react';
 import Layout from "./Layout";
-import {UsersContext} from "../App";
 import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteUser} from "../store/usersSlice";
 
 function EditDeleteAccount() {
-    const {users, setUsers} = useContext(UsersContext)
-
-    const deleteHandler = (id) => {
-        setUsers(users.filter(user => user.id !== id))
-    }
-
+    const {users} = useSelector((state) => state.userStore)
+    const dispatch = useDispatch()
+    
     const renderUsers = () => {
         return users.map((user) => {
             return <tr key={user.id}>
@@ -21,7 +18,7 @@ function EditDeleteAccount() {
                 <td>
                     <Link className="btn btn-warning me-2" to={"/editAccount/" + user.id}>Edit</Link>
                     <button className="btn btn-danger" onClick={() => {
-                        deleteHandler(user.id)
+                        dispatch(deleteUser(user.id))
                     }}>Delete
                     </button>
                 </td>
